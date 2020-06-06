@@ -35,3 +35,7 @@ func Date(year int, month time.Month, day int, hour, min, sec, nsec int, loc *ti
 	return
 }
 
+// Today returns the start time of today.
+func Today() Roro {
+	return Now().StartOfDay()
+}

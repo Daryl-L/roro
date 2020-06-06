@@ -22,3 +22,12 @@ func (r Roro) EndOfDay() (end Roro) {
 
 	return
 }
+
+// DiffDays returns the positive days difference between r and d.
+func (r Roro) DiffDays(d Roro) int64 {
+	if r.After(d) {
+		return (r.Unix() - d.Unix()) / SecondsInDay
+	} else {
+		return (d.Unix() - r.Unix()) / SecondsInDay
+	}
+}
