@@ -7,9 +7,20 @@ func (r Roro) Day() int {
 	return r.o.Day()
 }
 
+// Date returns the year, month, and day in which t occurs.
+func (r Roro) Date() (int, time.Month, int) {
+	return r.o.Date()
+}
+
+// YearDay returns the day of the year specified by t, in the range [1,365] for non-leap years,
+// and [1,366] in leap years.
+func (r Roro) YearDay() int {
+	return r.o.YearDay()
+}
+
 // StartOfDay returns the start time of the day in which r occurs.
 func (r Roro) StartOfDay() (start Roro) {
-	year, month, day := r.o.Date()
+	year, month, day := r.Date()
 
 	start = Date(year, month, day, 0, 0, 0, 0, r.o.Location())
 
@@ -30,4 +41,23 @@ func (r Roro) DiffDays(d Roro) int64 {
 	} else {
 		return (d.Unix() - r.Unix()) / SecondsInDay
 	}
+}
+
+// IsSameDay checks if the given date is as same day as the instance.
+func (r Roro) IsSameDay(d Roro) bool {
+	return r.Year() == d.Year() && r.YearDay() == d.YearDay()
+}
+
+// IsTomorrow checks if the given instance is as same day as current moment tomorrow.
+func (r Roro) IsTomorrow() bool {
+	var diffSecond = time.Duration(r.Unix() - Now().Unix())
+
+	return diffSecond > 0 && diffSecond > time.Hour * 24 && diffSecond < time.Hour * 24 * 2
+}
+
+// IsYesterday checks if the given instance is as same day as current moment yesterday.
+func (r Roro) IsYesterday() bool {
+	var diffSecond = time.Duration(Now().Unix() - r.Unix())
+
+	return diffSecond > 0 && diffSecond > time.Hour * 24 && diffSecond < time.Hour * 24 * 2
 }
